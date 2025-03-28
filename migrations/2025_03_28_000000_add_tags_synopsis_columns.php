@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of fof/synopsis.
+ *
+ * (c) FriendsOfFlarum
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 
 return [
-    'up' => function(Builder $schema) {
+    'up' => function (Builder $schema) {
         if (!$schema->hasColumn('tags', 'excerpt_length')) {
             $schema->table('tags', function (Blueprint $table) {
                 $table->integer('excerpt_length')->nullable()->unsigned();
@@ -17,10 +26,10 @@ return [
             });
         }
     },
-    'down' => function(Builder $schema) {
+    'down' => function (Builder $schema) {
         $schema->table('tags', function (Blueprint $table) {
             $table->dropColumn('excerpt_length');
             $table->dropColumn('rich_excerpts');
         });
-    }
+    },
 ];
