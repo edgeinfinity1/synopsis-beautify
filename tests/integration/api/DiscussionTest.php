@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace IanM\Synopsis\Tests\integration\api;
+namespace FoF\Synopsis\Tests\integration\api;
 
 use Carbon\Carbon;
 use Flarum\Discussion\Discussion;
@@ -21,7 +21,7 @@ class DiscussionTest extends TestCase
     {
         parent::setup();
 
-        $this->extension('flarum-tags', 'ianm-synopsis');
+        $this->extension('flarum-tags', 'fof-synopsis');
 
         $this->prepareDatabase([
             'users' => [
@@ -81,7 +81,7 @@ class DiscussionTest extends TestCase
      */
     public function discussion_has_lastPost_relation()
     {
-        $this->settings['ianm-synopsis.excerpt-type'] = 'last';
+        $this->settings['fof-synopsis.excerpt-type'] = 'last';
 
         $response = $this->send(
             $this->request('GET', '/api/discussions')

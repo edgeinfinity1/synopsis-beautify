@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace IanM\Synopsis\Tags;
+namespace FoF\Synopsis\Tags;
 
 use Flarum\Tags\Event\Saving as Event;
 use Illuminate\Support\Arr;

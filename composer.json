@@ -1,5 +1,5 @@
 {
-    "name": "ianm/synopsis",
+    "name": "fof/synopsis",
     "description": "Show summary excerpts on discussion lists.",
     "type": "flarum-extension",
     "keywords": [
@@ -19,8 +19,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/imorland/synopsis/issues",
-        "source": "https://github.com/imorland/synopsis",
+        "issues": "https://github.com/friendsofflarum/synopsis/issues",
+        "source": "https://github.com/friendsofflarum/synopsis",
         "forum": "https://discuss.flarum.org/d/25772"
     },
     "funding": [
@@ -34,23 +34,26 @@
     },
     "autoload": {
         "psr-4": {
-            "IanM\\Synopsis\\": "src/"
+            "FoF\\Synopsis\\": "src/"
         }
     },
-    "conflict": {
-        "jordanjay29/flarum-ext-summaries": "*"
+    "replace": {
+        "ianm/synopsis": "*"
     },
     "extra": {
-        "flagrow": {
-            "discuss": "https://discuss.flarum.org/d/25772"
-        },
         "flarum-extension": {
-            "title": "Synopsis",
+            "title": "FoF Synopsis",
             "category": "feature",
             "icon": {
                 "name": "fas fa-comment-dots",
-                "backgroundColor": "#0072e3",
+                "backgroundColor": "#e74c3c",
                 "color": "#fff"
+            }
+        },
+        "flarum-cli": {
+            "modules": {
+                "githubActions": true,
+                "backendTesting": true
             }
         }
     },
@@ -79,6 +82,11 @@
         "symfony/var-dumper": "*"
     },
     "config": {
-      "sort-packages": true
+        "sort-packages": true
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FoF\\Synopsis\\Tests\\": "tests/"
+        }
     }
 }

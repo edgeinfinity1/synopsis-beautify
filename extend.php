@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace IanM\Synopsis;
+namespace FoF\Synopsis;
 
 use Flarum\Api\Controller\ListDiscussionsController;
 use Flarum\Api\Controller\UpdateDiscussionController;

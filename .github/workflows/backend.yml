@@ -1,4 +1,4 @@
-name: IanM Synopsis
+name: FoF Synopsis PHP
 
 on: [workflow_dispatch, push, pull_request]
 

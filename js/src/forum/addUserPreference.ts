@@ -18,7 +18,7 @@ export default function () {
       'synopsis',
       FieldSet.component(
         {
-          label: app.translator.trans('ianm-synopsis.forum.user.settings.summaries-heading'),
+          label: app.translator.trans('fof-synopsis.forum.user.settings.summaries-heading'),
           className: 'Settings-Synopsis',
         },
         this.summariesItems().toArray()
@@ -47,7 +47,7 @@ export default function () {
           },
           loading: this.showSynopsisExcerptsLoading,
         },
-        app.translator.trans('ianm-synopsis.forum.user.settings.show-summaries')
+        app.translator.trans('fof-synopsis.forum.user.settings.show-summaries')
       )
     );
 
@@ -68,7 +68,7 @@ export default function () {
             },
             loading: this.showSynopsisExcerptsOnMobileLoading,
           },
-          app.translator.trans('ianm-synopsis.forum.user.settings.show-summaries-mobile')
+          app.translator.trans('fof-synopsis.forum.user.settings.show-summaries-mobile')
         )
       );
     }

@@ -6,7 +6,7 @@ export { default as extend } from './extend';
 
 export * from './components';
 
-app.initializers.add('ianm-synopsis', () => {
+app.initializers.add('fof-synopsis', () => {
   addSummaryExcerpt();
   addUserPreference();
 });

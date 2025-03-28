@@ -20,9 +20,9 @@ export default function () {
     items.add(
       'synopsis-excerpt-length',
       <div className="Form-group">
-        <label>{app.translator.trans('ianm-synopsis.admin.settings.excerpt-length.label')}</label>
+        <label>{app.translator.trans('fof-synopsis.admin.settings.excerpt-length.label')}</label>
         <input className="FormControl" type="number" min="0" bidi={this.excerptLength} />
-        <div>{app.translator.trans('ianm-synopsis.admin.settings.excerpt-length.help')}</div>
+        <div>{app.translator.trans('fof-synopsis.admin.settings.excerpt-length.help')}</div>
       </div>,
       5
     );
@@ -33,10 +33,10 @@ export default function () {
         <div>
           <label className="checkbox">
             <input type="checkbox" bidi={this.richExcerpts} />
-            {app.translator.trans('ianm-synopsis.admin.settings.rich-excerpts.label')}
+            {app.translator.trans('fof-synopsis.admin.settings.rich-excerpts.label')}
           </label>
         </div>
-        <div>{app.translator.trans('ianm-synopsis.admin.settings.rich-excerpts.help')}</div>
+        <div>{app.translator.trans('fof-synopsis.admin.settings.rich-excerpts.help')}</div>
       </div>,
       5
     );

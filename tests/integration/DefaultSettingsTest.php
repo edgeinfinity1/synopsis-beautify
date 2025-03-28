@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace IanM\Synopsis\Tests\integration;
+namespace FoF\Synopsis\Tests\integration;
 
 use Flarum\Testing\integration\TestCase;
 
@@ -19,7 +19,7 @@ class DefaultSettingsTest extends TestCase
     {
         parent::setup();
 
-        $this->extension('flarum-tags', 'ianm-synopsis');
+        $this->extension('flarum-tags', 'fof-synopsis');
     }
 
     /**

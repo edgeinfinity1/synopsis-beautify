@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace IanM\Synopsis\Tests\integration\api;
+namespace FoF\Synopsis\Tests\integration\api;
 
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
@@ -23,7 +23,7 @@ class UserPreferencesTest extends TestCase
     {
         parent::setup();
 
-        $this->extension('flarum-tags', 'ianm-synopsis');
+        $this->extension('flarum-tags', 'fof-synopsis');
 
         $this->prepareDatabase([
             'users' => [$this->normalUser()],

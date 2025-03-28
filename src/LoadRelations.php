@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace IanM\Synopsis;
+namespace FoF\Synopsis;
 
 use Flarum\Api\Controller\AbstractSerializeController;
 use Flarum\Settings\SettingsRepositoryInterface;
@@ -29,7 +29,7 @@ class LoadRelations
     public function __invoke(AbstractSerializeController $controller)
     {
         // Only include the `lastPost` relation if we need it.
-        if ($this->settings->get('ianm-synopsis.excerpt-type') === 'last') {
+        if ($this->settings->get('fof-synopsis.excerpt-type') === 'last') {
             $controller->addInclude('lastPost');
         } else {
             $controller->addInclude('firstPost');
