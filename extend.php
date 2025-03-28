@@ -33,14 +33,14 @@ return [
         ->cast('rich_excerpts', 'bool'),
 
     (new Extend\Settings())
-        ->default('ianm-synopsis.excerpt_length', 200)
-        ->default('ianm-synopsis.rich-excerpts', false)
-        ->default('ianm-synopsis.excerpt-type', 'first')
-        ->default('ianm-synopsis.disable-when-searching', true)
-        ->serializeToForum('synopsis.excerpt_length', 'ianm-synopsis.excerpt_length', 'intVal')
-        ->serializeToForum('synopsis.rich_excerpts', 'ianm-synopsis.rich-excerpts', 'boolVal')
-        ->serializeToForum('synopsis.excerpt_type', 'ianm-synopsis.excerpt-type')
-        ->serializeToForum('synopsis.disable_when_searching', 'ianm-synopsis.disable-when-searching', 'boolval'),
+        ->default('fof-synopsis.excerpt_length', 200)
+        ->default('fof-synopsis.rich-excerpts', false)
+        ->default('fof-synopsis.excerpt-type', 'first')
+        ->default('fof-synopsis.disable-when-searching', true)
+        ->serializeToForum('synopsis.excerpt_length', 'fof-synopsis.excerpt_length', 'intVal')
+        ->serializeToForum('synopsis.rich_excerpts', 'fof-synopsis.rich-excerpts', 'boolVal')
+        ->serializeToForum('synopsis.excerpt_type', 'fof-synopsis.excerpt-type')
+        ->serializeToForum('synopsis.disable_when_searching', 'fof-synopsis.disable-when-searching', 'boolval'),
 
     (new Extend\ApiController(ListDiscussionsController::class))
         ->prepareDataForSerialization(LoadRelations::class),
