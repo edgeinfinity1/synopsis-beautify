@@ -45,7 +45,7 @@ php flarum cache:clear
 ## Links
 
 - [Github](https://github.com/friendsofflarum/synopsis)
-- [Discuss](https://discuss.flarum.org/)
+- [Discuss](https://discuss.flarum.org/d/37231)
 - [Packagist](https://packagist.org/packages/fof/synopsis)
 
 ## Support
