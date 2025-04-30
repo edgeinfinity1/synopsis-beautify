@@ -12,7 +12,7 @@ export default class Excerpt extends Component<ExcerptAttrs> {
     richExcerpt: boolean;
     oninit(vnode: Mithril.Vnode<ExcerptAttrs, this>): void;
     view(): JSX.Element;
-    getContent(): string;
+    getContent(): Mithril.Vnode | string;
     contentRich(): string | null | undefined;
     contentPlain(): string | null | undefined;
 }
