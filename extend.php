@@ -50,7 +50,7 @@ return [
 
     (new Extend\User())
         ->registerPreference('showSynopsisExcerpts', 'boolVal', true)
-        ->registerPreference('showSynopsisExcerptsOnMobile', 'boolVal', false),
+        ->registerPreference('showSynopsisExcerptsOnMobile', 'boolVal', true),
 
     (new Extend\Event())
         ->listen(TagSaving::class, Tags\Saving::class),

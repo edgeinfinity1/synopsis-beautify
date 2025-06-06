@@ -35,7 +35,13 @@ export default function addSummaryExcerpt() {
 
     const tags = discussion.tags();
     let tag;
+    let disableSyno = false;
     if (tags) {
+      for (const tagTemp of tags) {
+        if (tagTemp?.excerptLength() === 0) {
+          disableSyno = true;
+        }
+      }
       tag = tags[tags.length - 1];
     }
 
@@ -45,7 +51,7 @@ export default function addSummaryExcerpt() {
     const onMobile = app.session.user ? app.session.user.preferences()?.showSynopsisExcerptsOnMobile : false;
 
     // A length of zero means we don't want a synopsis for this discussion, so do nothing.
-    if (excerptLength === 0) {
+    if (excerptLength === 0 || disableSyno) {
       return;
     }
 
