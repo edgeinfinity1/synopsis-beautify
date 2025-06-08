@@ -31,9 +31,7 @@ export default class Excerpt extends Component<ExcerptAttrs> {
       let foundElement = null;
       
       if (!childSelector) {
-          //if (!children.length) {console.log(parent);}
           if (!(["p", "h1", "h2", "h3", "h4", "h5", "h6"].includes(parent.tagName.toLowerCase()))) {
-              //console.log("protected!" + parent);
               return false;
           } else {
               return children.length ? false : true;
@@ -58,6 +56,23 @@ export default class Excerpt extends Component<ExcerptAttrs> {
           }
       }
       return elementCount === 1 && foundElement !== null;
+    }
+
+    function isFirstChildBR(element: HTMLElement) {
+        const children = element.childNodes;
+        for (let i = 0; i < children.length; i++) {
+            const node = children[i];
+            if (node.nodeType === 8) continue;
+            
+            if (node.nodeType === 3) {
+                if ((node.textContent || '').trim() !== '') return false;
+            } 
+            else if (node.nodeType === 1) {
+                if (node.tagName.toLowerCase() == 'img') continue;
+                return node.tagName.toLowerCase() == 'br';
+            }
+        }
+        return false;
     }
 
     let htmlContent = '';
@@ -131,6 +146,9 @@ export default class Excerpt extends Component<ExcerptAttrs> {
             for (let i = 2; i < brSet.length; i++) {
                 let removeBr = brSet[i];
                 removeBr.remove();
+            }
+            if (isFirstChildBR(directChild) && brSet.length) {
+                brSet[0].remove();
             }
         }
         for (const imgs of imgSets) {

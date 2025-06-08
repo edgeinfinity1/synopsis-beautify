@@ -286,9 +286,7 @@ var Excerpt = /*#__PURE__*/function (_Component) {
       var elementCount = 0;
       var foundElement = null;
       if (!childSelector) {
-        //if (!children.length) {console.log(parent);}
         if (!["p", "h1", "h2", "h3", "h4", "h5", "h6"].includes(parent.tagName.toLowerCase())) {
-          //console.log("protected!" + parent);
           return false;
         } else {
           return children.length ? false : true;
@@ -309,6 +307,20 @@ var Excerpt = /*#__PURE__*/function (_Component) {
         }
       }
       return elementCount === 1 && foundElement !== null;
+    }
+    function isFirstChildBR(element) {
+      var children = element.childNodes;
+      for (var i = 0; i < children.length; i++) {
+        var node = children[i];
+        if (node.nodeType === 8) continue;
+        if (node.nodeType === 3) {
+          if ((node.textContent || '').trim() !== '') return false;
+        } else if (node.nodeType === 1) {
+          if (node.tagName.toLowerCase() == 'img') continue;
+          return node.tagName.toLowerCase() == 'br';
+        }
+      }
+      return false;
     }
     var htmlContent = '';
     var finalHtmlContent = '';
@@ -382,6 +394,9 @@ var Excerpt = /*#__PURE__*/function (_Component) {
           for (var _i4 = 2; _i4 < brSet.length; _i4++) {
             var removeBr = brSet[_i4];
             removeBr.remove();
+          }
+          if (isFirstChildBR(_directChild) && brSet.length) {
+            brSet[0].remove();
           }
         }
         for (var _iterator3 = _createForOfIteratorHelperLoose(imgSets), _step3; !(_step3 = _iterator3()).done;) {
