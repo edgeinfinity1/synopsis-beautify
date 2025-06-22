@@ -58,21 +58,22 @@ export default class Excerpt extends Component<ExcerptAttrs> {
       return elementCount === 1 && foundElement !== null;
     }
 
-    function isFirstChildBR(element: HTMLElement) {
+    function removeFirstChildBR(element: HTMLElement) {
         const children = element.childNodes;
         for (let i = 0; i < children.length; i++) {
             const node = children[i];
             if (node.nodeType === 8) continue;
             
             if (node.nodeType === 3) {
-                if ((node.textContent || '').trim() !== '') return false;
+                if (!((node.textContent || '').trim() in [''])) return;
             } 
             else if (node.nodeType === 1) {
                 if (node.tagName.toLowerCase() == 'img') continue;
-                return node.tagName.toLowerCase() == 'br';
+                else if (node.tagName.toLowerCase() == 'br') {element.removeChild(node);}
+                else return;
             }
         }
-        return false;
+        return;
     }
 
     let htmlContent = '';
@@ -147,10 +148,9 @@ export default class Excerpt extends Component<ExcerptAttrs> {
                 let removeBr = brSet[i];
                 removeBr.remove();
             }
-            if (isFirstChildBR(directChild) && brSet.length) {
-                brSet[0].remove();
-            }
+            removeFirstChildBR(directChild);
         }
+        
         for (const imgs of imgSets) {
             for (const img of imgs) {
                 imgCount += 1;

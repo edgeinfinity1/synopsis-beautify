@@ -308,19 +308,20 @@ var Excerpt = /*#__PURE__*/function (_Component) {
       }
       return elementCount === 1 && foundElement !== null;
     }
-    function isFirstChildBR(element) {
+    function removeFirstChildBR(element) {
       var children = element.childNodes;
       for (var i = 0; i < children.length; i++) {
         var node = children[i];
         if (node.nodeType === 8) continue;
         if (node.nodeType === 3) {
-          if ((node.textContent || '').trim() !== '') return false;
+          if (!((node.textContent || '').trim() in [''])) return;
         } else if (node.nodeType === 1) {
-          if (node.tagName.toLowerCase() == 'img') continue;
-          return node.tagName.toLowerCase() == 'br';
+          if (node.tagName.toLowerCase() == 'img') continue;else if (node.tagName.toLowerCase() == 'br') {
+            element.removeChild(node);
+          } else return;
         }
       }
-      return false;
+      return;
     }
     var htmlContent = '';
     var finalHtmlContent = '';
@@ -395,9 +396,7 @@ var Excerpt = /*#__PURE__*/function (_Component) {
             var removeBr = brSet[_i4];
             removeBr.remove();
           }
-          if (isFirstChildBR(_directChild) && brSet.length) {
-            brSet[0].remove();
-          }
+          removeFirstChildBR(_directChild);
         }
         for (var _iterator3 = _createForOfIteratorHelperLoose(imgSets), _step3; !(_step3 = _iterator3()).done;) {
           var imgs = _step3.value;
