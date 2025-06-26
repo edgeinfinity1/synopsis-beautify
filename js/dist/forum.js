@@ -309,16 +309,39 @@ var Excerpt = /*#__PURE__*/function (_Component) {
       return elementCount === 1 && foundElement !== null;
     }
     function removeFirstChildBR(element) {
+      /* Actually removes all unnecessary elements */
       var children = element.childNodes;
+      var firstHandled = false;
+      var lastBr = false;
       for (var i = 0; i < children.length; i++) {
         var node = children[i];
-        if (node.nodeType === 8) continue;
-        if (node.nodeType === 3) {
-          if (!((node.textContent || '').trim() in [''])) return;
+        if (node.nodeType === 8) {
+          continue;
+        } else if (node.nodeType === 3) {
+          if (!((node.textContent || '').trim() == '' || (node.textContent || '').trim() == '\n')) {
+            console.log(node.textContent);
+            firstHandled = true;
+            lastBr = false;
+            continue;
+          } else {
+            continue;
+          }
         } else if (node.nodeType === 1) {
-          if (node.tagName.toLowerCase() == 'img') continue;else if (node.tagName.toLowerCase() == 'br') {
-            element.removeChild(node);
-          } else return;
+          var _node$firstChild;
+          if (node.tagName.toLowerCase() == 'img' || ((_node$firstChild = node.firstChild) == null ? void 0 : _node$firstChild.tagName.toLowerCase()) == 'img') {
+            continue;
+          } else if (node.tagName.toLowerCase() == 'br') {
+            if (!firstHandled || lastBr) {
+              element.removeChild(node);
+              i--;
+            }
+            lastBr = true;
+            continue;
+          } else {
+            firstHandled = true;
+            lastBr = false;
+            continue;
+          }
         }
       }
       return;

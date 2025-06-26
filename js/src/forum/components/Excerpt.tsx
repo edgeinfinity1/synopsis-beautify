@@ -59,18 +59,44 @@ export default class Excerpt extends Component<ExcerptAttrs> {
     }
 
     function removeFirstChildBR(element: HTMLElement) {
+        /* Actually removes all unnecessary elements */
         const children = element.childNodes;
+        let firstHandled = false;
+        let lastBr = false;
         for (let i = 0; i < children.length; i++) {
             const node = children[i];
-            if (node.nodeType === 8) continue;
+            if (node.nodeType === 8) {
+                continue;
+            }
             
-            if (node.nodeType === 3) {
-                if (!((node.textContent || '').trim() in [''])) return;
+            else if (node.nodeType === 3) {
+                if (!(((node.textContent || '').trim() == '') || ((node.textContent || '').trim() == '\n'))) {
+                    console.log(node.textContent);
+                    firstHandled = true;
+                    lastBr = false;
+                    continue;
+                } else {
+                    continue;
+                }
             } 
+
             else if (node.nodeType === 1) {
-                if (node.tagName.toLowerCase() == 'img') continue;
-                else if (node.tagName.toLowerCase() == 'br') {element.removeChild(node);}
-                else return;
+                if (node.tagName.toLowerCase() == 'img' || node.firstChild?.tagName.toLowerCase() == 'img') {
+                    continue;
+                }
+                else if (node.tagName.toLowerCase() == 'br') {
+                    if (!firstHandled || lastBr) {
+                        element.removeChild(node);
+                        i--;
+                    }
+                    lastBr = true;
+                    continue;
+                }
+                else {
+                    firstHandled = true;
+                    lastBr = false;
+                    continue;
+                }
             }
         }
         return;
