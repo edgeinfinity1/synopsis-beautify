@@ -71,7 +71,6 @@ export default class Excerpt extends Component<ExcerptAttrs> {
             
             else if (node.nodeType === 3) {
                 if (!(((node.textContent || '').trim() == '') || ((node.textContent || '').trim() == '\n'))) {
-                    console.log(node.textContent);
                     firstHandled = true;
                     lastBr = false;
                     continue;
