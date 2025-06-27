@@ -80,7 +80,7 @@ export default class Excerpt extends Component<ExcerptAttrs> {
             } 
 
             else if (node.nodeType === 1) {
-                if (node.tagName.toLowerCase() == 'img' || node.firstChild?.tagName.toLowerCase() == 'img') {
+                if (node.tagName.toLowerCase() == 'img' || node.firstChild?.tagName?.toLowerCase() == 'img') {
                     continue;
                 }
                 else if (node.tagName.toLowerCase() == 'br') {

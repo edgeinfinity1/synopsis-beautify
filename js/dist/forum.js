@@ -327,7 +327,7 @@ var Excerpt = /*#__PURE__*/function (_Component) {
           }
         } else if (node.nodeType === 1) {
           var _node$firstChild;
-          if (node.tagName.toLowerCase() == 'img' || ((_node$firstChild = node.firstChild) == null ? void 0 : _node$firstChild.tagName.toLowerCase()) == 'img') {
+          if (node.tagName.toLowerCase() == 'img' || ((_node$firstChild = node.firstChild) == null || (_node$firstChild = _node$firstChild.tagName) == null ? void 0 : _node$firstChild.toLowerCase()) == 'img') {
             continue;
           } else if (node.tagName.toLowerCase() == 'br') {
             if (!firstHandled || lastBr) {
