@@ -130,18 +130,22 @@ function addSummaryExcerpt() {
     var excerptPost = flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('synopsis.excerpt_type') === 'first' ? discussion.firstPost() : discussion.lastPost();
     var excerptLength = typeof ((_tag = tag) == null ? void 0 : _tag.excerptLength()) === 'number' ? (_tag2 = tag) == null ? void 0 : _tag2.excerptLength() : flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('synopsis.excerpt_length');
     var richExcerpt = typeof ((_tag3 = tag) == null ? void 0 : _tag3.richExcerpts()) === 'number' ? (_tag4 = tag) == null ? void 0 : _tag4.richExcerpts() : flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('synopsis.rich_excerpts');
-    var onMobile = (flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session).user ? (_app$session$user$pre2 = flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session.user.preferences()) == null ? void 0 : _app$session$user$pre2.showSynopsisExcerptsOnMobile : false;
+    var onMobile = (flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session).user ? (_app$session$user$pre2 = flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session.user.preferences()) == null ? void 0 : _app$session$user$pre2.showSynopsisExcerptsOnMobile : true;
 
     // A length of zero means we don't want a synopsis for this discussion, so do nothing.
     if (excerptLength === 0 || disableSyno) {
       return;
     }
+    //console.log(discussion.firstPost()['data']['id']);
+
     if (excerptPost) {
+      // console.log(excerptPost);
       var excerpt = m(_components_Excerpt__WEBPACK_IMPORTED_MODULE_4__["default"], {
         post: excerptPost,
         length: excerptLength,
         richExcerpt: richExcerpt
       });
+      // console.log(excerpt);
       items.add('excerpt', excerpt, -100);
       onMobile && items.add('excerptM', excerpt, -100);
     }

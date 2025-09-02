@@ -5,6 +5,7 @@ import DiscussionListItem from 'flarum/forum/components/DiscussionListItem';
 import ItemList from 'flarum/common/utils/ItemList';
 import type Mithril from 'mithril';
 import Excerpt from './components/Excerpt';
+import Discussion from 'flarum/common/models/Discussion';
 
 export default function addSummaryExcerpt() {
   extend(DiscussionListState.prototype, 'requestParams', function (params) {
@@ -48,16 +49,18 @@ export default function addSummaryExcerpt() {
     const excerptPost = app.forum.attribute<string>('synopsis.excerpt_type') === 'first' ? discussion.firstPost() : discussion.lastPost();
     const excerptLength = typeof tag?.excerptLength() === 'number' ? tag?.excerptLength() : app.forum.attribute<number>('synopsis.excerpt_length');
     const richExcerpt = typeof tag?.richExcerpts() === 'number' ? tag?.richExcerpts() : app.forum.attribute<boolean>('synopsis.rich_excerpts');
-    const onMobile = app.session.user ? app.session.user.preferences()?.showSynopsisExcerptsOnMobile : false;
+    const onMobile = app.session.user ? app.session.user.preferences()?.showSynopsisExcerptsOnMobile : true;
 
     // A length of zero means we don't want a synopsis for this discussion, so do nothing.
     if (excerptLength === 0 || disableSyno) {
       return;
     }
+    //console.log(discussion.firstPost()['data']['id']);
 
     if (excerptPost) {
+      // console.log(excerptPost);
       const excerpt = <Excerpt post={excerptPost} length={excerptLength} richExcerpt={richExcerpt} />;
-
+      // console.log(excerpt);
       items.add('excerpt', excerpt, -100);
       onMobile && items.add('excerptM', excerpt, -100);
     }
