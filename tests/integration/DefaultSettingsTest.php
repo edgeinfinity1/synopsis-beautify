@@ -12,6 +12,7 @@
 namespace FoF\Synopsis\Tests\integration;
 
 use Flarum\Testing\integration\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DefaultSettingsTest extends TestCase
 {
@@ -22,9 +23,7 @@ class DefaultSettingsTest extends TestCase
         $this->extension('flarum-tags', 'fof-synopsis');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verify_default_settings()
     {
         $response = $this->send(

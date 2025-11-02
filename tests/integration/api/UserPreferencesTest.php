@@ -14,6 +14,7 @@ namespace FoF\Synopsis\Tests\integration\api;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
 use Flarum\User\User;
+use PHPUnit\Framework\Attributes\Test;
 
 class UserPreferencesTest extends TestCase
 {
@@ -26,13 +27,11 @@ class UserPreferencesTest extends TestCase
         $this->extension('flarum-tags', 'fof-synopsis');
 
         $this->prepareDatabase([
-            'users' => [$this->normalUser()],
+            User::class => [$this->normalUser()],
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function user_has_correct_default_preferences()
     {
         $this->database();
