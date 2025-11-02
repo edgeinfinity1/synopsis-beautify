@@ -4,7 +4,7 @@ import type Mithril from 'mithril';
 import EditTagModal from 'ext:flarum/tags/admin/components/EditTagModal';
 import Stream from 'flarum/common/utils/Stream';
 
-declare module 'flarum/tags/common/models/Tag' {
+declare module 'ext:flarum/tags/common/models/Tag' {
   export default interface Tag {
     richExcerpts(): boolean;
     excerptLength(): number;
@@ -21,7 +21,7 @@ declare module 'flarum/forum/components/SettingsPage' {
   }
 }
 
-declare module 'flarum/tags/admin/components/EditTagModal' {
+declare module 'ext:flarum/tags/admin/components/EditTagModal' {
   export default interface EditTagModal {
     richExcerpts: Stream<boolean>;
     excerptLength: Stream<number>;
