@@ -1,6 +1,5 @@
 import app from 'flarum/forum/app';
 import { extend } from 'flarum/common/extend';
-import SettingsPage from 'flarum/forum/components/SettingsPage';
 import FieldSet from 'flarum/common/components/FieldSet';
 import ItemList from 'flarum/common/utils/ItemList';
 import Switch from 'flarum/common/components/Switch';
@@ -8,12 +7,12 @@ import Stream from 'flarum/common/utils/Stream';
 import type Mithril from 'mithril';
 
 export default function () {
-  extend(SettingsPage.prototype, 'oninit', function () {
+  extend('flarum/forum/components/SettingsPage', 'oninit', function () {
     this.showSynopsisExcerpts = Stream(this.user?.preferences()?.showSynopsisExcerpts);
     this.showSynopsisExcerptsOnMobile = Stream(this.user?.preferences()?.showSynopsisExcerptsOnMobile);
   });
 
-  extend(SettingsPage.prototype, 'settingsItems', function (items) {
+  extend('flarum/forum/components/SettingsPage', 'settingsItems', function (items) {
     items.add(
       'synopsis',
       FieldSet.component(
@@ -26,7 +25,7 @@ export default function () {
     );
   });
 
-  SettingsPage.prototype['summariesItems'] = function () {
+  extend('flarum/forum/components/SettingsPage', 'summariesItems', function () {
     const items = new ItemList<Mithril.Children>();
     if (!this.user) return items;
 
@@ -74,5 +73,5 @@ export default function () {
     }
 
     return items;
-  };
+  });
 }

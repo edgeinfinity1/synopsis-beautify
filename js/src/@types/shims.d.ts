@@ -1,5 +1,4 @@
 import Tag from 'ext:flarum/tags/common/models/Tag';
-import SettingsPage from 'flarum/forum/components/SettingsPage';
 import ItemList from 'flarum/common/utils/ItemList';
 import type Mithril from 'mithril';
 import EditTagModal from 'ext:flarum/tags/admin/components/EditTagModal';
