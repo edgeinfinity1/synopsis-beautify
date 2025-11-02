@@ -1,8 +1,7 @@
-import Tag from 'flarum/tags/common/models/Tag';
-import SettingsPage from 'flarum/forum/components/SettingsPage';
+import Tag from 'ext:flarum/tags/common/models/Tag';
 import ItemList from 'flarum/common/utils/ItemList';
 import type Mithril from 'mithril';
-import EditTagModal from 'flarum/tags/admin/components/EditTagModal';
+import EditTagModal from 'ext:flarum/tags/admin/components/EditTagModal';
 import Stream from 'flarum/common/utils/Stream';
 
 declare module 'flarum/tags/common/models/Tag' {
