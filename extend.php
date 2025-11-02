@@ -20,7 +20,9 @@ use Flarum\Tags\Tag;
 use Flarum\Api\Context;
 use Flarum\Api\Endpoint;
 use Flarum\Api\Resource;
+use Flarum\Api\Resource\DiscussionResource;
 use Flarum\Api\Schema;
+use Flarum\Tags\Api\Resource\TagResource;
 
 return [
     (new Extend\Frontend('forum'))
@@ -40,28 +42,27 @@ return [
         ->default('fof-synopsis.excerpt_length', 200)
         ->default('fof-synopsis.rich-excerpts', false)
         ->default('fof-synopsis.excerpt-type', 'first')
-        ->default('fof-synopsis.disable-when-searching', true)
         ->serializeToForum('synopsis.excerpt_length', 'fof-synopsis.excerpt_length', 'intVal')
         ->serializeToForum('synopsis.rich_excerpts', 'fof-synopsis.rich-excerpts', 'boolVal')
-        ->serializeToForum('synopsis.excerpt_type', 'fof-synopsis.excerpt-type')
-        ->serializeToForum('synopsis.disable_when_searching', 'fof-synopsis.disable-when-searching', 'boolval'),
-
-    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
-    (new Extend\ApiController(ListDiscussionsController::class))
-        ->prepareDataForSerialization(LoadRelations::class),
-
-    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
-    (new Extend\ApiController(UpdateDiscussionController::class))
-        ->prepareDataForSerialization(LoadRelations::class),
+        ->serializeToForum('synopsis.excerpt_type', 'fof-synopsis.excerpt-type'),
 
     (new Extend\User())
         ->registerPreference('showSynopsisExcerpts', 'boolVal', true)
         ->registerPreference('showSynopsisExcerptsOnMobile', 'boolVal', false),
 
-    (new Extend\Event())
-        ->listen(TagSaving::class, Tags\Saving::class),
+    (new Extend\ApiResource(TagResource::class))
+        ->fields(Api\AddTagResourceFields::class),
 
-    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
-    (new Extend\ApiSerializer(TagSerializer::class))
-        ->attributes(Tags\AddTagsAttrs::class),
+    (new Extend\ApiResource(DiscussionResource::class))
+        ->endpoint(['index', 'update'], function (Endpoint\Index|Endpoint\Update $endpoint) {
+            $settings = resolve('flarum.settings');
+
+            if ($settings->get('fof-synopsis.excerpt-type') === 'last') {
+                $endpoint->addDefaultInclude(['lastPost']);
+            } else {
+                $endpoint->addDefaultInclude(['firstPost']);
+            }
+
+            return $endpoint;
+        }),
 ];

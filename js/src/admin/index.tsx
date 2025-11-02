@@ -33,12 +33,6 @@ app.initializers.add('fof-synopsis', () => {
       setting: 'fof-synopsis.excerpt-type',
       options: typeOptions(),
       type: 'select',
-    })
-    .registerSetting({
-      label: app.translator.trans('fof-synopsis.admin.settings.disable-when-searching.label'),
-      help: app.translator.trans('fof-synopsis.admin.settings.disable-when-searching.help'),
-      setting: 'fof-synopsis.disable-when-searching',
-      type: 'switch',
     });
 
   extendEditTagModal();
