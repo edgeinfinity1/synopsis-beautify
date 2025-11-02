@@ -5,7 +5,7 @@ import typeOptions from './util/typeOptions';
 export { default as extend } from './extend';
 
 app.initializers.add('fof-synopsis', () => {
-  app.extensionData
+  app.registry
     .for('fof-synopsis')
     .registerSetting(function () {
       if (!('flarum-tags' in flarum.extensions)) return;
