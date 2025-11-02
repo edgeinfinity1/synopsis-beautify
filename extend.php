@@ -11,18 +11,11 @@
 
 namespace FoF\Synopsis;
 
-use Flarum\Api\Controller\ListDiscussionsController;
-use Flarum\Api\Controller\UpdateDiscussionController;
-use Flarum\Extend;
-use Flarum\Tags\Api\Serializer\TagSerializer;
-use Flarum\Tags\Event\Saving as TagSaving;
-use Flarum\Tags\Tag;
-use Flarum\Api\Context;
 use Flarum\Api\Endpoint;
-use Flarum\Api\Resource;
 use Flarum\Api\Resource\DiscussionResource;
-use Flarum\Api\Schema;
+use Flarum\Extend;
 use Flarum\Tags\Api\Resource\TagResource;
+use Flarum\Tags\Tag;
 
 return [
     (new Extend\Frontend('forum'))

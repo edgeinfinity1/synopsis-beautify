@@ -13,10 +13,10 @@ namespace FoF\Synopsis\Tests\integration\api;
 
 use Carbon\Carbon;
 use Flarum\Discussion\Discussion;
-use Flarum\Testing\integration\TestCase;
-use PHPUnit\Framework\Attributes\Test;
-use Flarum\User\User;
 use Flarum\Post\Post;
+use Flarum\Testing\integration\TestCase;
+use Flarum\User\User;
+use PHPUnit\Framework\Attributes\Test;
 
 class DiscussionTest extends TestCase
 {
