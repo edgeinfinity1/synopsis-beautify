@@ -17,6 +17,10 @@ use Flarum\Extend;
 use Flarum\Tags\Api\Serializer\TagSerializer;
 use Flarum\Tags\Event\Saving as TagSaving;
 use Flarum\Tags\Tag;
+use Flarum\Api\Context;
+use Flarum\Api\Endpoint;
+use Flarum\Api\Resource;
+use Flarum\Api\Schema;
 
 return [
     (new Extend\Frontend('forum'))
@@ -42,9 +46,11 @@ return [
         ->serializeToForum('synopsis.excerpt_type', 'fof-synopsis.excerpt-type')
         ->serializeToForum('synopsis.disable_when_searching', 'fof-synopsis.disable-when-searching', 'boolval'),
 
+    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
     (new Extend\ApiController(ListDiscussionsController::class))
         ->prepareDataForSerialization(LoadRelations::class),
 
+    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
     (new Extend\ApiController(UpdateDiscussionController::class))
         ->prepareDataForSerialization(LoadRelations::class),
 
@@ -55,6 +61,7 @@ return [
     (new Extend\Event())
         ->listen(TagSaving::class, Tags\Saving::class),
 
+    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
     (new Extend\ApiSerializer(TagSerializer::class))
         ->attributes(Tags\AddTagsAttrs::class),
 ];
