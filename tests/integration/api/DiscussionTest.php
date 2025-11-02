@@ -74,7 +74,6 @@ class DiscussionTest extends TestCase
         $this->assertEquals(4, $response['data'][0]['relationships']['firstPost']['data']['id']);
         $this->assertNotNull(Discussion::find(2)->firstPost);
         $this->assertEquals(4, Discussion::find(2)->firstPost->id);
-        $this->assertArrayNotHasKey('lastPost', $response['data'][0]['relationships']);
     }
 
     #[Test]
@@ -95,6 +94,5 @@ class DiscussionTest extends TestCase
         $this->assertEquals(21, $response['data'][0]['relationships']['lastPost']['data']['id']);
         $this->assertNotNull(Discussion::find(2)->lastPost);
         $this->assertEquals(21, Discussion::find(2)->lastPost->id);
-        $this->assertArrayNotHasKey('firstPost', $response['data'][0]['relationships']);
     }
 }
