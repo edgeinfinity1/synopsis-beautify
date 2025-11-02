@@ -1,5 +1,5 @@
 import app from 'flarum/admin/app';
-import EditTagModal from 'flarum/tags/admin/components/EditTagModal';
+import EditTagModal from 'ext:flarum/tags/admin/components/EditTagModal';
 import { extend } from 'flarum/common/extend';
 import Stream from 'flarum/common/utils/Stream';
 
