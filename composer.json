@@ -29,7 +29,7 @@
         }
     ],
     "require": {
-        "flarum/core": "^1.8.0",
+        "flarum/core": "^2.0.0-beta",
         "flarum/tags": "*"
     },
     "autoload": {
@@ -76,9 +76,9 @@
         "analyse:phpstan": "Run static analysis"
     },
     "require-dev": {
-        "flarum/core": "*",
-        "flarum/phpstan": "*",
-        "flarum/testing": "^1.0.0",
+        "flarum/core": "^2.0.0-beta",
+        "flarum/phpstan": "^2.0.0-beta",
+        "flarum/testing": "^2.0.0-beta",
         "symfony/var-dumper": "*"
     },
     "config": {
