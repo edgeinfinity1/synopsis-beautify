@@ -118,12 +118,13 @@ export default class Excerpt extends Component<ExcerptAttrs> {
           // get that out
           for (let i = 0; i < directChildren.length - 1; i++) {
               const directChildNotLast = directChildren[i];
-              if (directChildNotLast.children.length == 0) {
-                  richContext = true;
+              if (directChildNotLast.children.length != 0) {
+                  richContext = false;
                   break;
               }
           }
       }
+      if (richContext === null) {richContext = true}
       if (richContext) {
         let imgCount = 0;
         let nonImgCount = 0;
