@@ -37,19 +37,34 @@ export default function addSummaryExcerpt() {
     const tags = discussion.tags();
     let tag;
     let disableSyno = false;
+    let disableRich = false;
     if (tags) {
       for (const tagTemp of tags) {
         if (tagTemp?.excerptLength() === 0) {
+          // Disable syno if any included tag disallows syno
           disableSyno = true;
         }
+        if (!tagTemp?.richExcerpts() && (tagTemp.isPrimary() || tagTemp.parent())) {
+          // Disable rich only if a unique tag disallows rich
+          disableRich = true;
+        }
+        if (tagTemp?.isPrimary()) {
+          // If this is a primary tag, then it's good for following procedure
+          tag = tagTemp;
+        }
       }
-      tag = tags[tags.length - 1];
+      if (!tag) {
+        // Failsafe
+        tag = tags[tags.length - 1];
+      }
     }
 
     const excerptPost = app.forum.attribute<string>('synopsis.excerpt_type') === 'first' ? discussion.firstPost() : discussion.lastPost();
     const excerptLength = typeof tag?.excerptLength() === 'number' ? tag?.excerptLength() : app.forum.attribute<number>('synopsis.excerpt_length');
-    const richExcerpt = typeof tag?.richExcerpts() === 'number' ? tag?.richExcerpts() : app.forum.attribute<boolean>('synopsis.rich_excerpts');
+    const richExcerpt = !disableRich || app.forum.attribute<boolean>('synopsis.rich_excerpts');
     const onMobile = app.session.user ? app.session.user.preferences()?.showSynopsisExcerptsOnMobile : true;
+
+    console.log(disableRich);
 
     // A length of zero means we don't want a synopsis for this discussion, so do nothing.
     if (excerptLength === 0 || disableSyno) {
