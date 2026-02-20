@@ -64,7 +64,7 @@ export default function addSummaryExcerpt() {
     const richExcerpt = !disableRich || app.forum.attribute<boolean>('synopsis.rich_excerpts');
     const onMobile = app.session.user ? app.session.user.preferences()?.showSynopsisExcerptsOnMobile : true;
 
-    console.log(disableRich);
+    // console.log(disableRich);
 
     // A length of zero means we don't want a synopsis for this discussion, so do nothing.
     if (excerptLength === 0 || disableSyno) {
