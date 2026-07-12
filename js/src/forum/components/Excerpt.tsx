@@ -24,190 +24,199 @@ export default class Excerpt extends Component<ExcerptAttrs> {
   }
 
   beautifyContent() {
+    const blockTags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
-    function containsOnlySpecificChild(parent: HTMLElement, childSelector: string) {
+    function containsOnlySpecificChild(parent: Element, childSelector: string) {
       const children = parent.childNodes;
       let elementCount = 0;
       let foundElement = null;
-      
+
       if (!childSelector) {
-          if (!(["p", "h1", "h2", "h3", "h4", "h5", "h6"].includes(parent.tagName.toLowerCase()))) {
-              return false;
-          } else {
-              return children.length ? false : true;
-          }
+        if (!blockTags.includes(parent.tagName.toLowerCase())) {
+          return false;
+        }
+
+        return !children.length;
       }
-  
+
       for (let i = 0; i < children.length; i++) {
-          const node = children[i];
-          
-          if (node.nodeType === Node.ELEMENT_NODE) {
-              elementCount++;
-              if (elementCount > 1 || !(node as Element).matches(childSelector)) {
-                  return false;
-              }
-              foundElement = node;
+        const node = children[i];
+
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          elementCount++;
+          if (elementCount > 1 || !(node as Element).matches(childSelector)) {
+            return false;
           }
-          else if (node.nodeType === Node.TEXT_NODE && (node.textContent || '').trim() !== '') {
-              return false;
-          }
-          else if (node.nodeType !== Node.TEXT_NODE) {
-              return false;
-          }
+          foundElement = node;
+        } else if (node.nodeType === Node.TEXT_NODE && (node.textContent || '').trim() !== '') {
+          return false;
+        } else if (node.nodeType !== Node.TEXT_NODE) {
+          return false;
+        }
       }
+
       return elementCount === 1 && foundElement !== null;
     }
 
-    function removeFirstChildBR(element: HTMLElement) {
-        /* Actually removes all unnecessary elements */
-        const children = element.childNodes;
-        let firstHandled = false;
-        let lastBr = false;
-        for (let i = 0; i < children.length; i++) {
-            const node = children[i];
-            if (node.nodeType === 8) {
-                continue;
-            }
-            
-            else if (node.nodeType === 3) {
-                if (!(((node.textContent || '').trim() == '') || ((node.textContent || '').trim() == '\n'))) {
-                    firstHandled = true;
-                    lastBr = false;
-                    continue;
-                } else {
-                    continue;
-                }
-            } 
+    function withHiddenDisplay(element: Element, hidden: boolean) {
+      const clone = element.cloneNode(true) as HTMLElement;
 
-            else if (node.nodeType === 1) {
-                if (node.tagName.toLowerCase() == 'img' || node.firstChild?.tagName?.toLowerCase() == 'img') {
-                    continue;
-                }
-                else if (node.tagName.toLowerCase() == 'br') {
-                    if (!firstHandled || lastBr) {
-                        element.removeChild(node);
-                        i--;
-                    }
-                    lastBr = true;
-                    continue;
-                }
-                else {
-                    firstHandled = true;
-                    lastBr = false;
-                    continue;
-                }
-            }
+      if (hidden) {
+        clone.style.setProperty('display', 'none');
+      }
+
+      return clone.outerHTML;
+    }
+
+    function withoutImages(element: Element) {
+      const clone = element.cloneNode(true) as HTMLElement;
+
+      clone.querySelectorAll('img').forEach((img) => {
+        img.replaceWith();
+      });
+
+      return clone;
+    }
+
+    function removeUnnecessaryBreaks(element: Element) {
+      const clone = element.cloneNode(true) as HTMLElement;
+      const nextChildren: ChildNode[] = [];
+      let firstHandled = false;
+      let lastBr = false;
+      let brCount = 0;
+
+      clone.childNodes.forEach((node) => {
+        if (node.nodeType === Node.COMMENT_NODE) {
+          nextChildren.push(node.cloneNode(true) as ChildNode);
+          return;
         }
-        return;
+
+        if (node.nodeType === Node.TEXT_NODE) {
+          if ((node.textContent || '').trim() !== '') {
+            firstHandled = true;
+            lastBr = false;
+          }
+
+          nextChildren.push(node.cloneNode(true) as ChildNode);
+          return;
+        }
+
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          const child = node as Element;
+          const isImage = child.tagName.toLowerCase() === 'img' || child.firstElementChild?.tagName.toLowerCase() === 'img';
+
+          if (isImage) {
+            nextChildren.push(node.cloneNode(true) as ChildNode);
+            return;
+          }
+
+          if (child.tagName.toLowerCase() === 'br') {
+            brCount++;
+
+            if (brCount <= 2 && firstHandled && !lastBr) {
+              nextChildren.push(node.cloneNode(true) as ChildNode);
+            }
+
+            lastBr = true;
+            return;
+          }
+
+          firstHandled = true;
+          lastBr = false;
+          nextChildren.push(node.cloneNode(true) as ChildNode);
+        }
+      });
+
+      clone.replaceChildren(...nextChildren);
+
+      return clone;
+    }
+
+    function serializeNonEmpty(element: Element) {
+      return containsOnlySpecificChild(element, '') ? '' : (element as HTMLElement).outerHTML;
     }
 
     let htmlContent = '';
     let finalHtmlContent = '';
+
     if (this.richExcerpt) {
       htmlContent = truncateHtml(this.contentRich() ?? '', this.length);
       const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlContent, "text/html");
+      const doc = parser.parseFromString(htmlContent, 'text/html');
 
       const oneSynopsis = doc.body;
       let richContext = null;
-      const directChildren = oneSynopsis.children;
-      if (directChildren.length == 1 && directChildren[0].children.length) {
-          richContext = false;
+      const directChildren = Array.from(oneSynopsis.children);
+
+      if (directChildren.length === 1 && directChildren[0].children.length) {
+        richContext = false;
       } else {
-          // poor context still breaks element when specials appear, like img
-          // get that out
-          for (let i = 0; i < directChildren.length - 1; i++) {
-              const directChildNotLast = directChildren[i];
-              if (directChildNotLast.children.length != 0) {
-                  richContext = false;
-                  break;
-              }
+        // poor context still breaks element when specials appear, like img
+        // get that out
+        for (let i = 0; i < directChildren.length - 1; i++) {
+          const directChildNotLast = directChildren[i];
+          if (directChildNotLast.children.length !== 0) {
+            richContext = false;
+            break;
           }
+        }
       }
-      if (richContext === null) {richContext = true}
+
+      if (richContext === null) richContext = true;
+
       if (richContext) {
         let imgCount = 0;
         let nonImgCount = 0;
-        
-        let pending = [];
-        let pending2 = [];
-        
+        const content: string[] = [];
+        const pending: string[] = [];
+        const pending2: string[] = [];
+
         for (const directChild of directChildren) {
-            if (containsOnlySpecificChild(directChild, "img")) {
-                // so this is a pure picture child
-                imgCount += 1;
-                if (imgCount >= 4) {
-                    directChild.style.setProperty("display", "none");
-                }
-                pending.push(directChild);
-            } else if (directChild.tagName.toLowerCase() == "img") {
-                imgCount += 1;
-                if (imgCount >= 4) {
-                    directChild.style.setProperty("display", "none");
-                }
-                pending2.push(directChild);
-            } else {
-                nonImgCount += 1;
-                if (nonImgCount >= 4) {
-                    directChild.style.setProperty("display", "none");
-                }
-            }
+          if (containsOnlySpecificChild(directChild, 'img')) {
+            imgCount += 1;
+            pending.push(withHiddenDisplay(directChild, imgCount >= 4));
+          } else if (directChild.tagName.toLowerCase() === 'img') {
+            imgCount += 1;
+            pending2.push(`<p>${withHiddenDisplay(directChild, imgCount >= 4)}</p>`);
+          } else {
+            nonImgCount += 1;
+            content.push(withHiddenDisplay(directChild, nonImgCount >= 4));
+          }
         }
-        for (const pend of pending) {
-            oneSynopsis.appendChild(pend);
-        }
-        for (const pend2 of pending2) {
-            let imgWrapper = document.createElement("p");
-            imgWrapper.appendChild(pend2);
-            oneSynopsis.appendChild(imgWrapper);
-        }
+
+        finalHtmlContent = [...content, ...pending, ...pending2].join('');
       } else {
-        // ensured poor context
         let imgCount = 0;
-        let nonImgCount = 0;
-        
-        let imgSets: any[] = [];
+        const content: HTMLElement[] = [];
+        const imgContent: string[] = [];
+
         for (const directChild of directChildren) {
-            imgSets = imgSets.concat(directChild.querySelectorAll("img"));
-            let brSet = directChild.querySelectorAll("br");
-            for (let i = 2; i < brSet.length; i++) {
-                let removeBr = brSet[i];
-                removeBr.remove();
-            }
-            removeFirstChildBR(directChild);
+          directChild.querySelectorAll('img').forEach((img) => {
+            imgCount += 1;
+            imgContent.push(`<p>${withHiddenDisplay(img, imgCount >= 4)}</p>`);
+          });
+
+          const childWithoutImages = withoutImages(directChild);
+          const cleanedChild = removeUnnecessaryBreaks(childWithoutImages);
+          content.push(cleanedChild);
         }
-        
-        for (const imgs of imgSets) {
-            for (const img of imgs) {
-                imgCount += 1;
-                if (imgCount >= 4) {
-                    img.style.setProperty("display", "none");
-                }
-                let imgWrapper = document.createElement("p");
-                imgWrapper.appendChild(img);
-                oneSynopsis.appendChild(imgWrapper);
-            }
-        }
-        
-        nonImgCount = directChildren.length - imgCount
-        for (let i = 3; i < nonImgCount; i++) {
-            let nonDispChild = directChildren[i];
-            nonDispChild.style.setProperty("display", "none");
-        }
-        
-        const clearEmpty = oneSynopsis.querySelectorAll("*");
-        for (const ifEmpty of clearEmpty) {
-            if (containsOnlySpecificChild(ifEmpty, "")) {
-                ifEmpty.remove();
-            }
-        }
+
+        finalHtmlContent =
+          content
+            .map((element, index) => {
+              if (index >= 3) {
+                element.style.setProperty('display', 'none');
+              }
+
+              return serializeNonEmpty(element);
+            })
+            .join('') + imgContent.join('');
       }
-      //console.log(oneSynopsis);
-      finalHtmlContent = oneSynopsis.innerHTML;
     } else {
       htmlContent = truncate(this.contentPlain() ?? '', this.length);
       finalHtmlContent = htmlContent;
     }
+
     return finalHtmlContent;
   }
 
